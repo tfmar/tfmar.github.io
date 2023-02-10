@@ -1,0 +1,42 @@
+<!--
+Copyright 2023 Google LLC.
+SPDX-License-Identifier: Apache-2.0
+-->
+<head>
+	<title>iframe test site</title>
+</head>
+
+<h1>iframe test page</h1>
+
+<body>
+
+This console logs all messages received via postMessage.
+<button id="sendToChild">Send message to child</button>
+
+<div id="console"></div>
+
+<script>
+  const dest = document.getElementById('console');
+  window.addEventListener("message", (event) => {
+    dest.innerHTML += `<div>${event.origin}: ${event.data}</div><hr/>`;
+  });
+  document.getElementById('sendToChild').addEventListener('click', (event) => {
+    const childFrame = document.getElementById('child');
+    childFrame.contentWindow.postMessage('message from parent', '*');
+  });
+</script>
+
+<iframe id="child" srcdoc="
+<div id='innerdest'>This console logs all messages received via postMessage.</div>
+<button id='sendToParent'>Send message to parent</button>
+<script>
+const innerDest = document.getElementById('innerdest');
+window.addEventListener('message', (event) => {
+  innerDest.innerHTML += `<div>${event.origin}: ${event.data}</div><hr/>`;
+});
+document.getElementById('sendToParent').addEventListener('click', (event) => {
+  window.parent.postMessage('message from child', '*');
+});
+</script>"></iframe>
+
+</body>
