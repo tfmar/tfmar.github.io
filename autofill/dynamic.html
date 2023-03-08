@@ -1,0 +1,47 @@
+<!--
+Copyright 2023 Google LLC.
+SPDX-License-Identifier: Apache-2.0
+-->
+<head>
+	<title>Dynamic form test page</title>
+</head>
+
+<body>
+
+<h1>Dynamic form test page</h1>
+
+<form id="login-form">
+  <div>
+    <label for="username">Username: </label>
+    <input type="text" id="username" name="username">
+  </div>
+
+  <button id="addPw">Add Password Field</button>
+</form>
+
+</body>
+
+<script>
+  const addPw = document.getElementById("addPw");
+  addPw.addEventListener("click", () => {
+    addPw.remove();
+    
+    const pwSection = document.createElement("div");
+    const pwLabel = document.createElement("label");
+    pwLabel.setAttribute("for", "pwField");
+    pwLabel.innerText = "Password: ";
+    
+    const pwField = document.createElement("input");
+    pwField.setAttribute("type", "password");
+    pwField.setAttribute("id", "pwField");
+    
+    const loginButton = document.createElement("button");
+    loginButton.innerText = "Log in (no-op)";
+
+    const br = document.createElement("br");
+
+    pwSection.append(pwLabel, pwField, br, loginButton);
+
+    document.getElementById("login-form").appendChild(pwSection);
+  });
+</script>
